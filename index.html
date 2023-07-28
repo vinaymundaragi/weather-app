@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="search city" spellcheck="false">
+            <button><img src="images/search.png"></button>
+        </div>
+        <div class="weather">
+            <img src="images/rain.png" class="weather-icon">
+            <h1 class="temp">--</h1>
+            <h2 class="city">--</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="images/humidity.png">
+                </div>
+                <div>
+                    <p class="humidity">--</p>
+                    <p>Humidity</p>
+                </div>
+
+                <div class="col">
+                    <img src="images/wind.png">
+                </div>
+                <div>
+                    <p class="wind">--</p>
+                    <p>Wind Speed</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        const myapikey = "73c7e9d369dc0a31df9588dcf00ecc84";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+        const searchBox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button");
+
+        async function checkWeather(city) {
+            const response = await fetch(apiUrl + city + `&appid=${myapikey}`);
+            var data = await response.json();
+
+
+            console.log(data);
+            console.log(searchBtn);
+            console.log(searchBox);
+
+
+
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+            document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+
+
+
+
+        }
+
+        //handling using left mouse click on search button
+        searchBtn.addEventListener("click", () => {
+            checkWeather(searchBox.value);
+        });
+
+        //handling using an "Enter" key press on entire document
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                checkWeather(searchBox.value);
+            }
+
+        });
+
+
+
+    </script>
+</body>
+
+</html>
